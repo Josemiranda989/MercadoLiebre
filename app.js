@@ -1,20 +1,28 @@
-const express = require('express');
+const express = require("express");
+const path = require("path");
 const app = express();
-app.use(express.static('public'));
+const port = 3000;
 
+const publicPath = path.resolve(__dirname, "./public");
+app.use(express.static(publicPath)); //le dice a express que public es un recurso estatico
 
-app.listen(process.env.PORT || 3000, ()=>{
-    console.log('Servidor funcionando');
+app.get("/", function (req, res) {
+  res.sendFile(path.join(__dirname, "/views/home.html"));
 });
 
-app.get('/', (req,res)=>{
-    res.sendFile(__dirname + '/views/home.html');
+app.get("/register", function (req, res) {
+  res.sendFile(path.join(__dirname, "/views/register.html"));
 });
 
-app.get('/register', (req,res)=>{
-    res.sendFile(__dirname + '/views/register.html');
+app.get("/login", function (req, res) {
+  res.sendFile(path.join(__dirname, "/views/login.html"));
 });
 
-app.get('/login', (req,res)=>{
-    res.sendFile(__dirname + '/views/login.html');
+app.post("/login", function (req, res) {
+  res.redirect("/");
+});
+
+app.listen(process.env.PORT || port, () => {
+  console.log("Servidor corriendo correctamente 😎");
+  console.log("http://localhost:3000");
 });
